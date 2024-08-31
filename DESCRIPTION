@@ -1,0 +1,21 @@
+Package: GenesPackage
+Type: Package
+Title: Genes Management Package
+Version: 0.1.0
+Authors@R: person("Arianna", "Rigamonti", email = "arianna1.rigamonti@mail.polimi.it", role = c("aut", "cre"))
+Description: A package to manage gene information using S4 classes and GenomicRanges. 
+    It provides a comprehensive suite for handling different gene types, including 
+    protein-coding genes and various non-coding RNA genes. The package supports 
+    operations such as creation, modification, and summary of gene objects.
+Depends: R (>= 4.4.0)
+Imports: methods, GenomicRanges, IRanges
+License: GPL-3
+Encoding: UTF-8
+RoxygenNote: 7.3.2
+Config/Needs/website:
+        https://cran.r-project.org/web/packages/roxygen2/index.html
+biocViews: Software, Genetics, Transcriptomics, RNASeq
+Suggests: knitr, rmarkdown, testthat
+VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2024-07-06 08:52:34 UTC; ariannarigamonti

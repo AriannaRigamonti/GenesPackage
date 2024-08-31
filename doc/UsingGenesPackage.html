@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Arianna Rigamonti - 252321 - arianna1.rigamonti@mail.polimi.it" />
+
+
+<title>Using GenesPackage</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Using GenesPackage</h1>
+<h4 class="author">Arianna Rigamonti - 252321 - <a href="mailto:arianna1.rigamonti@mail.polimi.it" class="email">arianna1.rigamonti@mail.polimi.it</a></h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The GenesPackage provides a set of classes and methods to represent
+and manipulate different types of genes. This vignette provides an
+overview of the main functionalities of the package.</p>
+</div>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<p>To install the package, use the following commands:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Install the package from source</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># install.packages(&quot;GenesPackage_0.1.0.tar.gz&quot;, repos = NULL, type = &quot;source&quot;)</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Load the package</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">library</span>(GenesPackage)</span></code></pre></div>
+</div>
+<div id="creating-gene-objects" class="section level1">
+<h1>Creating Gene Objects</h1>
+<p>The package provides various functions to create different types of
+gene objects. Below are some examples.</p>
+<div id="creating-a-generic-gene" class="section level2">
+<h2>Creating a Generic Gene</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(GenomicRanges)</span></code></pre></div>
+<pre><code>## Loading required package: stats4</code></pre>
+<pre><code>## Loading required package: BiocGenerics</code></pre>
+<pre><code>## 
+## Attaching package: &#39;BiocGenerics&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+##     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+##     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
+##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+##     Position, rank, rbind, Reduce, rownames, sapply, setdiff, table,
+##     tapply, union, unique, unsplit, which.max, which.min</code></pre>
+<pre><code>## Loading required package: S4Vectors</code></pre>
+<pre><code>## 
+## Attaching package: &#39;S4Vectors&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:utils&#39;:
+## 
+##     findMatches</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     expand.grid, I, unname</code></pre>
+<pre><code>## Loading required package: IRanges</code></pre>
+<pre><code>## Loading required package: GenomeInfoDb</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Create a GRanges object for the gene structure</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>gr <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(<span class="at">seqnames =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">ranges =</span> <span class="fu">IRanges</span>(<span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co"># Create a generic Gene object</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="fu">createGene</span>(<span class="at">ID =</span> <span class="dv">1</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL&quot;</span>, <span class="at">name =</span> <span class="st">&quot;Gene Name&quot;</span>, </span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>                   <span class="at">description =</span> <span class="st">&quot;Description&quot;</span>, <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, </span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>                   <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, <span class="at">product =</span> <span class="fu">list</span>())</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co"># Display the gene object</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>gene</span></code></pre></div>
+<pre><code>## An object of class &quot;Gene&quot;
+## Slot &quot;ID&quot;:
+## [1] 1
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;Gene Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+<div id="creating-a-lncrna-gene" class="section level2">
+<h2>Creating a lncRNA Gene</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Create a lncRNAGene object</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>lncrna_gene <span class="ot">&lt;-</span> <span class="fu">createLncRNAGene</span>(<span class="at">ID =</span> <span class="dv">2</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL_LNC&quot;</span>, </span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>                                <span class="at">name =</span> <span class="st">&quot;LncRNA Name&quot;</span>, <span class="at">description =</span> <span class="st">&quot;LncRNA Description&quot;</span>, </span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>                                <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, </span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>                                <span class="at">product =</span> <span class="fu">list</span>(), <span class="at">lncRNAID =</span> <span class="st">&quot;lncrna1&quot;</span>, </span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>                                <span class="at">RNASequence =</span> <span class="st">&quot;RNA_SEQUENCE&quot;</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co"># Display the lncRNA gene object</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>lncrna_gene</span></code></pre></div>
+<pre><code>## An object of class &quot;lncRNAGene&quot;
+## Slot &quot;lncRNAID&quot;:
+## [1] &quot;lncrna1&quot;
+## 
+## Slot &quot;RNASequence&quot;:
+## [1] &quot;RNA_SEQUENCE&quot;
+## 
+## Slot &quot;ID&quot;:
+## [1] 2
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL_LNC&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;LncRNA Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;LncRNA Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+<div id="creating-a-microrna-gene" class="section level2">
+<h2>Creating a microRNA Gene</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># Create a microRNAGene object</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>mirna_gene <span class="ot">&lt;-</span> <span class="fu">createMicroRNAGene</span>(<span class="at">ID =</span> <span class="dv">3</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL_MIR&quot;</span>, </span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>                                 <span class="at">name =</span> <span class="st">&quot;MicroRNA Name&quot;</span>, <span class="at">description =</span> <span class="st">&quot;MicroRNA Description&quot;</span>, </span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>                                 <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, </span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>                                 <span class="at">product =</span> <span class="fu">list</span>(), <span class="at">microRNAID =</span> <span class="st">&quot;mirna1&quot;</span>, </span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>                                 <span class="at">microRNASequence =</span> <span class="st">&quot;SEED_SEQ&quot;</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co"># Display the microRNA gene object</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>mirna_gene</span></code></pre></div>
+<pre><code>## An object of class &quot;microRNAGene&quot;
+## Slot &quot;microRNAID&quot;:
+## [1] &quot;mirna1&quot;
+## 
+## Slot &quot;microRNASequence&quot;:
+## [1] &quot;SEED_SEQ&quot;
+## 
+## Slot &quot;ID&quot;:
+## [1] 3
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL_MIR&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;MicroRNA Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;MicroRNA Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+<div id="creating-a-pirna-gene" class="section level2">
+<h2>Creating a piRNA Gene</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># Create a piRNAGene object</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>pirna_gene <span class="ot">&lt;-</span> <span class="fu">createPiRNAGene</span>(<span class="at">ID =</span> <span class="dv">8</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL_PI&quot;</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>                              <span class="at">name =</span> <span class="st">&quot;piRNA Name&quot;</span>, <span class="at">description =</span> <span class="st">&quot;piRNA Description&quot;</span>, </span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>                              <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, </span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>                              <span class="at">product =</span> <span class="fu">list</span>(), <span class="at">piRNAID =</span> <span class="st">&quot;pirna1&quot;</span>, </span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>                              <span class="at">piRNASequence =</span> <span class="st">&quot;PIRNA_SEQ&quot;</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co"># Display the piRNA gene object</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>pirna_gene</span></code></pre></div>
+<pre><code>## An object of class &quot;piRNAGene&quot;
+## Slot &quot;piRNAID&quot;:
+## [1] &quot;pirna1&quot;
+## 
+## Slot &quot;piRNASequence&quot;:
+## [1] &quot;PIRNA_SEQ&quot;
+## 
+## Slot &quot;ID&quot;:
+## [1] 8
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL_PI&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;piRNA Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;piRNA Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+<div id="creating-a-protein-coding-gene" class="section level2">
+<h2>Creating a Protein-Coding Gene</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># Create a ProteinCodingGene object</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>protein_gene <span class="ot">&lt;-</span> <span class="fu">createProteinCodingGene</span>(<span class="at">ID =</span> <span class="dv">1</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL&quot;</span>, </span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>                                        <span class="at">name =</span> <span class="st">&quot;Gene Name&quot;</span>, <span class="at">description =</span> <span class="st">&quot;Description&quot;</span>, </span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>                                        <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, </span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>                                        <span class="at">product =</span> <span class="fu">list</span>(), <span class="at">proteinID =</span> <span class="st">&quot;protein1&quot;</span>, </span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>                                        <span class="at">proteinSequence =</span> <span class="st">&quot;SEQUENCE&quot;</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="co"># Display the protein-coding gene object</span></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>protein_gene</span></code></pre></div>
+<pre><code>## An object of class &quot;ProteinCodingGene&quot;
+## Slot &quot;proteinID&quot;:
+## [1] &quot;protein1&quot;
+## 
+## Slot &quot;proteinSequence&quot;:
+## [1] &quot;SEQUENCE&quot;
+## 
+## Slot &quot;ID&quot;:
+## [1] 1
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;Gene Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+<div id="creating-an-rrna-gene" class="section level2">
+<h2>Creating an rRNA Gene</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># Create an rRNAGene object</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>rrna_gene <span class="ot">&lt;-</span> <span class="fu">createRRNAGene</span>(<span class="at">ID =</span> <span class="dv">7</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL_R&quot;</span>, </span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>                            <span class="at">name =</span> <span class="st">&quot;rRNA Name&quot;</span>, <span class="at">description =</span> <span class="st">&quot;rRNA Description&quot;</span>, </span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>                            <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, </span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>                            <span class="at">product =</span> <span class="fu">list</span>(), <span class="at">rRNAID =</span> <span class="st">&quot;rrna1&quot;</span>, <span class="at">rRNASequence =</span> <span class="st">&quot;RRNA_SEQ&quot;</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="co"># Display the rRNA gene object</span></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>rrna_gene</span></code></pre></div>
+<pre><code>## An object of class &quot;rRNAGene&quot;
+## Slot &quot;rRNAID&quot;:
+## [1] &quot;rrna1&quot;
+## 
+## Slot &quot;rRNASequence&quot;:
+## [1] &quot;RRNA_SEQ&quot;
+## 
+## Slot &quot;ID&quot;:
+## [1] 7
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL_R&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;rRNA Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;rRNA Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+<div id="creating-a-sirna-gene" class="section level2">
+<h2>Creating a siRNA Gene</h2>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co"># Create a siRNAGene object</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>sirna_gene <span class="ot">&lt;-</span> <span class="fu">createSiRNAGene</span>(<span class="at">ID =</span> <span class="dv">4</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL_SI&quot;</span>, </span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>                              <span class="at">name =</span> <span class="st">&quot;siRNA Name&quot;</span>, <span class="at">description =</span> <span class="st">&quot;siRNA Description&quot;</span>, </span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>                              <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, </span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>                              <span class="at">product =</span> <span class="fu">list</span>(), <span class="at">siRNAID =</span> <span class="st">&quot;sirna1&quot;</span>, </span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a>                              <span class="at">siRNASequence =</span> <span class="st">&quot;SIRNA_SEQ&quot;</span>)</span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a><span class="co"># Display the siRNA gene object</span></span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a>sirna_gene</span></code></pre></div>
+<pre><code>## An object of class &quot;siRNAGene&quot;
+## Slot &quot;siRNAID&quot;:
+## [1] &quot;sirna1&quot;
+## 
+## Slot &quot;siRNASequence&quot;:
+## [1] &quot;SIRNA_SEQ&quot;
+## 
+## Slot &quot;ID&quot;:
+## [1] 4
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL_SI&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;siRNA Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;siRNA Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+<div id="creating-a-snorna-gene" class="section level2">
+<h2>Creating a snoRNA Gene</h2>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="co"># Create a snoRNAGene object</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>snorna_gene <span class="ot">&lt;-</span> <span class="fu">createSnoRNAGene</span>(<span class="at">ID =</span> <span class="dv">5</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL_SNO&quot;</span>, </span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>                                <span class="at">name =</span> <span class="st">&quot;snoRNA Name&quot;</span>, <span class="at">description =</span> <span class="st">&quot;snoRNA Description&quot;</span>, </span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>                                <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, </span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>                                <span class="at">product =</span> <span class="fu">list</span>(), <span class="at">snoRNAID =</span> <span class="st">&quot;snorna1&quot;</span>, </span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>                                <span class="at">snoRNASequence =</span> <span class="st">&quot;SNORNA_SEQ&quot;</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a><span class="co"># Display the snoRNA gene object</span></span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a>snorna_gene</span></code></pre></div>
+<pre><code>## An object of class &quot;snoRNAGene&quot;
+## Slot &quot;snoRNAID&quot;:
+## [1] &quot;snorna1&quot;
+## 
+## Slot &quot;snoRNASequence&quot;:
+## [1] &quot;SNORNA_SEQ&quot;
+## 
+## Slot &quot;ID&quot;:
+## [1] 5
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL_SNO&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;snoRNA Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;snoRNA Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+<div id="creating-a-trna-gene" class="section level2">
+<h2>Creating a tRNA Gene</h2>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="co"># Create a tRNAGene object</span></span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>trna_gene <span class="ot">&lt;-</span> <span class="fu">createTRNAGene</span>(<span class="at">ID =</span> <span class="dv">6</span><span class="dt">L</span>, <span class="at">symbol =</span> <span class="st">&quot;SYMBOL_T&quot;</span>, </span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>                            <span class="at">name =</span> <span class="st">&quot;tRNA Name&quot;</span>, <span class="at">description =</span> <span class="st">&quot;tRNA Description&quot;</span>, </span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>                            <span class="at">chr =</span> <span class="st">&quot;chr1&quot;</span>, <span class="at">start =</span> <span class="dv">1</span>, <span class="at">end =</span> <span class="dv">1000</span>, <span class="at">strand =</span> <span class="st">&quot;+&quot;</span>, </span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>                            <span class="at">product =</span> <span class="fu">list</span>(), <span class="at">tRNAID =</span> <span class="st">&quot;trna1&quot;</span>, </span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a>                            <span class="at">tRNASequence =</span> <span class="st">&quot;TRNA_SEQ&quot;</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a><span class="co"># Display the tRNA gene object</span></span>
+<span id="cb30-9"><a href="#cb30-9" tabindex="-1"></a>trna_gene</span></code></pre></div>
+<pre><code>## An object of class &quot;tRNAGene&quot;
+## Slot &quot;tRNAID&quot;:
+## [1] &quot;trna1&quot;
+## 
+## Slot &quot;tRNASequence&quot;:
+## [1] &quot;TRNA_SEQ&quot;
+## 
+## Slot &quot;ID&quot;:
+## [1] 6
+## 
+## Slot &quot;symbol&quot;:
+## [1] &quot;SYMBOL_T&quot;
+## 
+## Slot &quot;name&quot;:
+## [1] &quot;tRNA Name&quot;
+## 
+## Slot &quot;description&quot;:
+## [1] &quot;tRNA Description&quot;
+## 
+## Slot &quot;structure&quot;:
+## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+## 
+## Slot &quot;product&quot;:
+## list()</code></pre>
+</div>
+</div>
+<div id="accessing-gene-information" class="section level1">
+<h1>Accessing Gene Information</h1>
+<p>The package provides various methods to access information from gene
+objects. Below are some examples.</p>
+<div id="getting-gene-id" class="section level2">
+<h2>Getting Gene ID</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="co"># Get the gene ID</span></span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="fu">getID</span>(gene)</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="getting-gene-symbol" class="section level2">
+<h2>Getting Gene Symbol</h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="co"># Get the gene symbol</span></span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="fu">getSymbol</span>(gene)</span></code></pre></div>
+<pre><code>## [1] &quot;SYMBOL&quot;</code></pre>
+</div>
+<div id="getting-gene-name" class="section level2">
+<h2>Getting Gene Name</h2>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="co"># Get the gene name</span></span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="fu">getName</span>(gene)</span></code></pre></div>
+<pre><code>## [1] &quot;Gene Name&quot;</code></pre>
+</div>
+<div id="getting-gene-description" class="section level2">
+<h2>Getting Gene Description</h2>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="co"># Get the gene description</span></span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="fu">getDescription</span>(gene)</span></code></pre></div>
+<pre><code>## [1] &quot;Description&quot;</code></pre>
+</div>
+<div id="getting-gene-structure" class="section level2">
+<h2>Getting Gene Structure</h2>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="co"># Get the gene structure</span></span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a><span class="fu">getStructure</span>(gene)</span></code></pre></div>
+<pre><code>## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr1    1-1000      +
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</code></pre>
+</div>
+<div id="getting-gene-product" class="section level2">
+<h2>Getting Gene Product</h2>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="co"># Get the gene product</span></span>
+<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a><span class="fu">getProduct</span>(gene)</span></code></pre></div>
+<pre><code>## list()</code></pre>
+</div>
+</div>
+<div id="setting-gene-information" class="section level1">
+<h1>Setting Gene Information</h1>
+<p>The package also provides methods to set information for gene
+objects.</p>
+<div id="setting-gene-id" class="section level2">
+<h2>Setting Gene ID</h2>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="co"># Set a new gene ID</span></span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="fu">setID</span>(gene) <span class="ot">&lt;-</span> <span class="dv">2</span><span class="dt">L</span></span>
+<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a><span class="fu">getID</span>(gene)</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+</div>
+<div id="setting-gene-symbol" class="section level2">
+<h2>Setting Gene Symbol</h2>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a><span class="co"># Set a new gene symbol</span></span>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a><span class="fu">setSymbol</span>(gene) <span class="ot">&lt;-</span> <span class="st">&quot;NEW_SYMBOL&quot;</span></span>
+<span id="cb46-3"><a href="#cb46-3" tabindex="-1"></a><span class="fu">getSymbol</span>(gene)</span></code></pre></div>
+<pre><code>## [1] &quot;NEW_SYMBOL&quot;</code></pre>
+</div>
+<div id="setting-gene-name" class="section level2">
+<h2>Setting Gene Name</h2>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="co"># Set a new gene name</span></span>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a><span class="fu">setName</span>(gene) <span class="ot">&lt;-</span> <span class="st">&quot;New Gene Name&quot;</span></span>
+<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a><span class="fu">getName</span>(gene)</span></code></pre></div>
+<pre><code>## [1] &quot;New Gene Name&quot;</code></pre>
+</div>
+<div id="setting-gene-description" class="section level2">
+<h2>Setting Gene Description</h2>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="co"># Set a new gene description</span></span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a><span class="fu">setDescription</span>(gene) <span class="ot">&lt;-</span> <span class="st">&quot;New Description&quot;</span></span>
+<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a><span class="fu">getDescription</span>(gene)</span></code></pre></div>
+<pre><code>## [1] &quot;New Description&quot;</code></pre>
+</div>
+<div id="setting-gene-structure" class="section level2">
+<h2>Setting Gene Structure</h2>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a><span class="co"># Set a new gene structure</span></span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a>new_structure <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(<span class="at">seqnames =</span> <span class="st">&quot;chr2&quot;</span>, <span class="at">ranges =</span> <span class="fu">IRanges</span>(<span class="at">start =</span> <span class="dv">100</span>, <span class="at">end =</span> <span class="dv">2000</span>), <span class="at">strand =</span> <span class="st">&quot;-&quot;</span>)</span>
+<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a><span class="fu">setStructure</span>(gene) <span class="ot">&lt;-</span> new_structure</span>
+<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a><span class="fu">getStructure</span>(gene)</span></code></pre></div>
+<pre><code>## GRanges object with 1 range and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     chr2  100-2000      -
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths</code></pre>
+</div>
+<div id="setting-gene-product" class="section level2">
+<h2>Setting Gene Product</h2>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="co"># Set a new gene product</span></span>
+<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="fu">setProduct</span>(gene) <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;new product&quot;</span>)</span>
+<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a><span class="fu">getProduct</span>(gene)</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] &quot;new product&quot;</code></pre>
+</div>
+</div>
+<div id="summary-of-gene-information" class="section level1">
+<h1>Summary of Gene Information</h1>
+<p>The package provides summary methods to get an overview of the gene
+information.</p>
+<div id="summary-of-a-gene" class="section level2">
+<h2>Summary of a Gene</h2>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a><span class="co"># Summary of a generic Gene object</span></span>
+<span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a><span class="fu">summary</span>(gene)</span></code></pre></div>
+<pre><code>## Gene ID: 2 
+## Gene Symbol: NEW_SYMBOL 
+## Gene Name: New Gene Name 
+## Gene Description: New Description 
+## Chromosome: chr2 
+## Start Position: 100 
+## End Position: 2000 
+## Strand: - 
+## Gene Length: 1901 
+## Product:
+## [[1]]
+## [1] &quot;new product&quot;</code></pre>
+</div>
+<div id="summary-of-a-lncrna-gene" class="section level2">
+<h2>Summary of a lncRNA Gene</h2>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a><span class="co"># Summary of a lncRNA Gene object</span></span>
+<span id="cb58-2"><a href="#cb58-2" tabindex="-1"></a><span class="fu">summary</span>(lncrna_gene)</span></code></pre></div>
+<pre><code>## Gene ID: 2 
+## Gene Symbol: SYMBOL_LNC 
+## Gene Name: LncRNA Name 
+## Gene Description: LncRNA Description 
+## Chromosome: chr1 
+## Start Position: 1 
+## End Position: 1000 
+## Strand: + 
+## Gene Length: 1000 
+## Product:
+## list()
+## lncRNA ID: lncrna1 
+## RNA Sequence: RNA_SEQUENCE</code></pre>
+</div>
+<div id="summary-of-a-microrna-gene" class="section level2">
+<h2>Summary of a microRNA Gene</h2>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" tabindex="-1"></a><span class="co"># Summary of a microRNA Gene object</span></span>
+<span id="cb60-2"><a href="#cb60-2" tabindex="-1"></a><span class="fu">summary</span>(mirna_gene)</span></code></pre></div>
+<pre><code>## Gene ID: 3 
+## Gene Symbol: SYMBOL_MIR 
+## Gene Name: MicroRNA Name 
+## Gene Description: MicroRNA Description 
+## Chromosome: chr1 
+## Start Position: 1 
+## End Position: 1000 
+## Strand: + 
+## Gene Length: 1000 
+## Product:
+## list()
+## microRNA ID: mirna1 
+## microRNA Sequence: SEED_SEQ</code></pre>
+</div>
+<div id="summary-of-a-pirna-gene" class="section level2">
+<h2>Summary of a piRNA Gene</h2>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" tabindex="-1"></a><span class="co"># Summary of a piRNA Gene object</span></span>
+<span id="cb62-2"><a href="#cb62-2" tabindex="-1"></a><span class="fu">summary</span>(pirna_gene)</span></code></pre></div>
+<pre><code>## Gene ID: 8 
+## Gene Symbol: SYMBOL_PI 
+## Gene Name: piRNA Name 
+## Gene Description: piRNA Description 
+## Chromosome: chr1 
+## Start Position: 1 
+## End Position: 1000 
+## Strand: + 
+## Gene Length: 1000 
+## Product:
+## list()
+## piRNA ID: pirna1 
+## piRNA Sequence: PIRNA_SEQ</code></pre>
+</div>
+<div id="summary-of-a-protein-coding-gene" class="section level2">
+<h2>Summary of a Protein-Coding Gene</h2>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" tabindex="-1"></a><span class="co"># Summary of a Protein-Coding Gene object</span></span>
+<span id="cb64-2"><a href="#cb64-2" tabindex="-1"></a><span class="fu">summary</span>(protein_gene)</span></code></pre></div>
+<pre><code>## Gene ID: 1 
+## Gene Symbol: SYMBOL 
+## Gene Name: Gene Name 
+## Gene Description: Description 
+## Chromosome: chr1 
+## Start Position: 1 
+## End Position: 1000 
+## Strand: + 
+## Gene Length: 1000 
+## Product:
+## list()
+## Protein ID: protein1 
+## Protein Sequence: SEQUENCE</code></pre>
+</div>
+<div id="summary-of-an-rrna-gene" class="section level2">
+<h2>Summary of an rRNA Gene</h2>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" tabindex="-1"></a><span class="co"># Summary of an rRNA Gene object</span></span>
+<span id="cb66-2"><a href="#cb66-2" tabindex="-1"></a><span class="fu">summary</span>(rrna_gene)</span></code></pre></div>
+<pre><code>## Gene ID: 7 
+## Gene Symbol: SYMBOL_R 
+## Gene Name: rRNA Name 
+## Gene Description: rRNA Description 
+## Chromosome: chr1 
+## Start Position: 1 
+## End Position: 1000 
+## Strand: + 
+## Gene Length: 1000 
+## Product:
+## list()
+## rRNA ID: rrna1 
+## rRNA Sequence: RRNA_SEQ</code></pre>
+</div>
+<div id="summary-of-a-sirna-gene" class="section level2">
+<h2>Summary of a siRNA Gene</h2>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" tabindex="-1"></a><span class="co"># Summary of a siRNA Gene object</span></span>
+<span id="cb68-2"><a href="#cb68-2" tabindex="-1"></a><span class="fu">summary</span>(sirna_gene)</span></code></pre></div>
+<pre><code>## Gene ID: 4 
+## Gene Symbol: SYMBOL_SI 
+## Gene Name: siRNA Name 
+## Gene Description: siRNA Description 
+## Chromosome: chr1 
+## Start Position: 1 
+## End Position: 1000 
+## Strand: + 
+## Gene Length: 1000 
+## Product:
+## list()
+## siRNA ID: sirna1 
+## siRNA Sequence: SIRNA_SEQ</code></pre>
+</div>
+<div id="summary-of-a-snorna-gene" class="section level2">
+<h2>Summary of a snoRNA Gene</h2>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" tabindex="-1"></a><span class="co"># Summary of a snoRNA Gene object</span></span>
+<span id="cb70-2"><a href="#cb70-2" tabindex="-1"></a><span class="fu">summary</span>(snorna_gene)</span></code></pre></div>
+<pre><code>## Gene ID: 5 
+## Gene Symbol: SYMBOL_SNO 
+## Gene Name: snoRNA Name 
+## Gene Description: snoRNA Description 
+## Chromosome: chr1 
+## Start Position: 1 
+## End Position: 1000 
+## Strand: + 
+## Gene Length: 1000 
+## Product:
+## list()
+## snoRNA ID: snorna1 
+## snoRNA Sequence: SNORNA_SEQ</code></pre>
+</div>
+<div id="summary-of-a-trna-gene" class="section level2">
+<h2>Summary of a tRNA Gene</h2>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" tabindex="-1"></a><span class="co"># Summary of a tRNA Gene object</span></span>
+<span id="cb72-2"><a href="#cb72-2" tabindex="-1"></a><span class="fu">summary</span>(trna_gene)</span></code></pre></div>
+<pre><code>## Gene ID: 6 
+## Gene Symbol: SYMBOL_T 
+## Gene Name: tRNA Name 
+## Gene Description: tRNA Description 
+## Chromosome: chr1 
+## Start Position: 1 
+## End Position: 1000 
+## Strand: + 
+## Gene Length: 1000 
+## Product:
+## list()
+## tRNA ID: trna1 
+## tRNA Sequence: TRNA_SEQ</code></pre>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>The GenesPackage provides a comprehensive set of tools for
+representing and manipulating different types of genes in R. This
+vignette has provided an overview of the main functionalities of the
+package, including creating gene objects, accessing and setting gene
+information, and summarizing gene information.</p>
+<p>For more detailed information about each function and class, please
+refer to the package documentation.</p>
+</div>
+<div id="session-info" class="section level1">
+<h1>Session Info</h1>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>## R version 4.4.1 (2024-06-14)
+## Platform: aarch64-apple-darwin20
+## Running under: macOS Sonoma 14.5
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## time zone: Europe/Rome
+## tzcode source: internal
+## 
+## attached base packages:
+## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
+## 
+## other attached packages:
+## [1] GenomicRanges_1.56.1 GenomeInfoDb_1.40.1  IRanges_2.38.1      
+## [4] S4Vectors_0.42.1     BiocGenerics_0.50.0  GenesPackage_0.1.0  
+## 
+## loaded via a namespace (and not attached):
+##  [1] httr_1.4.7              cli_3.6.3               knitr_1.47             
+##  [4] rlang_1.1.4             xfun_0.45               UCSC.utils_1.0.0       
+##  [7] jsonlite_1.8.8          htmltools_0.5.8.1       sass_0.4.9             
+## [10] rmarkdown_2.27          evaluate_0.24.0         jquerylib_0.1.4        
+## [13] fastmap_1.2.0           yaml_2.3.9              lifecycle_1.0.4        
+## [16] compiler_4.4.1          XVector_0.44.0          rstudioapi_0.16.0      
+## [19] digest_0.6.36           R6_2.5.1                GenomeInfoDbData_1.2.12
+## [22] bslib_0.7.0             tools_4.4.1             zlibbioc_1.50.0        
+## [25] cachem_1.1.0</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
