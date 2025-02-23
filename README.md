@@ -73,8 +73,8 @@ setDescription(gene) <- "Updated Description"
 ```
 
 ## Dependencies
-R version: 4.4.1 or later
-Required packages: GenomicRanges, IRanges, S4Vectors, BiocGenerics
+- R version: 4.4.1 or later
+- Required packages: GenomicRanges, IRanges, S4Vectors, BiocGenerics
 
 To install dependencies:
 
